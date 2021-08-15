@@ -7,9 +7,9 @@ import os
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['POST'])
 def upload_file():
-    if request.method == 'GET':
+    if request.method == 'POST':
         f = request.json
         os.system("rm giz_class.tex")
         slide_pdf = "giz_class.pdf"
