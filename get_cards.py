@@ -2,10 +2,12 @@ from flask import Flask
 from flask import request
 from flask import send_file
 from flask.json import load
+from flask_cors import CORS
 from gen_slides import load_cards, load_head
 import os
 
 app = Flask(__name__)
+cors = CORS(app)
 
 @app.route('/', methods=['POST'])
 def upload_file():
