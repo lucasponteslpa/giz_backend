@@ -1,7 +1,7 @@
-import numpy as np
+from bs4 import BeautifulSoup as bs
 
 def add_frame(doc, text, title=None):
-    doc += '\\begin{frame}\n'
+    doc += '\\begin{frame}[allowframebreaks]\n'
     if title != None:
         doc += '\\frametitle{'+title+'}\n'
     doc += text+'\n'
@@ -9,13 +9,17 @@ def add_frame(doc, text, title=None):
     return doc
 
 def load_head(doc):
-    doc += '\\documentclass{beamer}\n\\usetheme{CambridgeUS}\n\\useinnertheme{rectangles}\n\\title{Aula}\n\\date{\\today}\n'
+    doc += '\\documentclass{beamer}\n\\usepackage[T1]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[brazilian]{babel}\n\\useinnertheme{rectangles}\n\\title{Aula}\n\\date{\\today}\n'
     return doc
 
 def load_text(doc, text, title):
-    text_split = text.split('.')
-    for txt in text_split[:-1]:
-        doc = add_frame(doc, txt, title=title)
+    #text_split = text.split('.')
+    #for txt in text_split[:-1]:
+    soup = bs(text)
+    soup.encode("utf8")
+    h1_title = soup.findAll("h1")[0].renderContents() 
+    breakpoint()
+    doc = add_frame(doc, text, title=title)
     return doc
 
 def load_cards(doc, cards):
