@@ -1,8 +1,5 @@
 from bs4 import BeautifulSoup as bs
 
-
-"\begin{figure}[h]\centering\includegraphics[scale=0.15]{figures/vgg16.png}\caption{Arquitetura VGG16}\label{fig:vgg16}\end{figure}"
-
 def add_section(doc, text):
     doc += '\\section{'+text+'}\n'
     return doc
