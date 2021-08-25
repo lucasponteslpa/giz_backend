@@ -33,7 +33,7 @@ def add_image(doc, text, title=None):
     return doc
 
 def load_head(doc):
-    doc += '\\documentclass{beamer}\n\\usetheme{Berlin}\\usepackage[T1]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[brazilian]{babel}\n\\usepackage{movie15}\n\\useinnertheme{rectangles}\n\\title{Aula}\\author{Professor}\n\\institute{Escola}\n\\date{\\today}\n'
+    doc += '\\documentclass{beamer}\n\\usetheme{Hannover}\\usepackage[T1]{fontenc}\n\\usepackage[utf8]{inputenc}\n\\usepackage[brazilian]{babel}\n\\usepackage{movie15}\n\\useinnertheme{rectangles}\n\\title{Aula}\\author{Professor}\n\\institute{Escola}\n\\date{\\today}\n'
     return doc
 
 def load_text(doc, text, title):
