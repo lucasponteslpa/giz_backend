@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup as bs
+import re
 
 def add_section(doc, text):
     doc += '\\section{'+text+'}\n'
@@ -16,15 +17,16 @@ def add_subsubsection(doc, text):
 
 def add_frame(doc, text, title=None):
     doc += '\\begin{frame}\n'
-    if title != None:
+    if title is not None:
         doc += '\\frametitle{'+title+'}\n'
     doc += text+'\n'
     doc += '\\end{frame}\n'
     return doc
 
 def add_image(doc, text, title=None):
-    split_tag = text.split('=')
-    img_path = split_tag[1][1:-3]
+    #split_tag = text.split('=')
+    #img_path = split_tag[1][1:-3]
+    img_path = re.findall('src="([^"]+)"', text, flags=0)[0]
     if img_path[-3:] != 'gif':
         text_frame= "\\begin{figure}[h]\\centering\\includegraphics[width=\\linewidth,height=0.8\\textheight,keepaspectratio]{"+img_path+"}\\end{figure}"
     # else:
@@ -50,11 +52,29 @@ def load_text(doc, text, title):
     for k_tag in parsed_tag.keys():
         tag = parsed_tag[k_tag]
         if tag != None:
-            pos_cont_list += [(k_tag, t.sourcepos, t.string if k_tag != 'img_content' else str(t)) for t in tag]
+            pos_cont_list += [(k_tag, (t.sourceline, t.sourcepos), t.string if k_tag != 'img_content' else str(t)) for t in tag]
 
     pos_list = [pos[1] for pos in pos_cont_list]
-    pos_list.sort()
-    content_dic = {pos:(k_tag, cont) for k_tag, pos, cont in pos_cont_list}
+
+    def sort_list(lista):
+        lista = sorted(lista, key=lambda x: x[0])
+        aux = []
+        aux2 = []
+        aux3 = []
+
+        for l in lista:
+            if l[0] not in aux:
+                aux.append(l[0])
+                aux2 = sorted(aux2, key=lambda x: x[1])
+                aux3 += aux2
+                aux2 = [l]
+            else:
+                aux2.append(l)
+        aux3 += aux2
+        return aux3
+
+    pos_list = sort_list(pos_list)
+    content_dic = {pos: (k_tag, cont) for k_tag, pos, cont in pos_cont_list}
     
     #breakpoint()
     actual_title = title
@@ -77,9 +97,12 @@ def load_text(doc, text, title):
             else:
                 doc = add_subsubsection(doc, content_dic[p][1])
         elif content_dic[p][0] == 'img_content':
-            doc = add_image(doc, content_dic[p][1], title=actual_title)
+                doc = add_image(doc, content_dic[p][1], title=actual_title)
         elif content_dic[p][0] == 'content':
-            doc = add_frame(doc, content_dic[p][1], title=actual_title)
+            try:
+                doc = add_frame(doc, content_dic[p][1], title=actual_title)
+            except TypeError:
+                breakpoint()
     return doc
 
 def load_cards(doc, cards):
@@ -87,7 +110,7 @@ def load_cards(doc, cards):
     doc = add_frame(doc,'\\titlepage')
     doc = add_frame(doc, '\\tableofcontents',title='Sumário')
     for text in cards:
-        doc = load_text(doc, text['texto'], text['título'])
+        doc = load_text(doc, text['texto'], text['titulo'])
     doc += '\\end{document}'
     return doc
 
