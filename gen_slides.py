@@ -99,10 +99,7 @@ def load_text(doc, text, title):
         elif content_dic[p][0] == 'img_content':
                 doc = add_image(doc, content_dic[p][1], title=actual_title)
         elif content_dic[p][0] == 'content':
-            try:
-                doc = add_frame(doc, content_dic[p][1], title=actual_title)
-            except TypeError:
-                breakpoint()
+            doc = add_frame(doc, content_dic[p][1], title=actual_title)
     return doc
 
 def load_cards(doc, cards):
