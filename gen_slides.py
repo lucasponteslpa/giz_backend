@@ -23,7 +23,6 @@ def add_frame(doc, text, title=None):
             doc += '\\frametitle{'+title+'}\n'
         doc += text+'\n'
         doc += '\\end{frame}\n'
-        doc = doc.strip(u'\u200b')
     return doc
 
 def add_image(doc, text, title=None):
