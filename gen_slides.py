@@ -16,11 +16,12 @@ def add_subsubsection(doc, text):
     return doc
 
 def add_frame(doc, text, title=None):
-    doc += '\\begin{frame}\n'
-    if title is not None:
-        doc += '\\frametitle{'+title+'}\n'
-    doc += text+'\n'
-    doc += '\\end{frame}\n'
+    if text != None:
+        doc += '\\begin{frame}\n'
+        if title is not None:
+            doc += '\\frametitle{'+title+'}\n'
+        doc += text+'\n'
+        doc += '\\end{frame}\n'
     return doc
 
 def add_image(doc, text, title=None):
