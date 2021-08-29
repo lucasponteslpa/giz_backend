@@ -19,10 +19,11 @@ def add_subsubsection(doc, text):
 def add_frame(doc, text, title=None):
     if text != None:
         doc += '\\begin{frame}\n'
-        if title is not None or u'\u200c' in text:
+        if title is not None:
             doc += '\\frametitle{'+title+'}\n'
         doc += text+'\n'
         doc += '\\end{frame}\n'
+        doc = doc.strip(u'\u200b')
     return doc
 
 def add_image(doc, text, title=None):
