@@ -13,7 +13,7 @@ cors = CORS(app)
 def upload_file():
     if request.method == 'POST':
         f = request.json
-        os.system("rm giz_class.tex")
+        os.system("rm giz_class*")
         slide_pdf = "giz_class.pdf"
         slide_file = open("giz_class.tex","w")
         doc = ""
