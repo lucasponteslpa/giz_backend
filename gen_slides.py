@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup as bs
+import os
 import re
 
 def add_section(doc, text):
@@ -28,11 +29,12 @@ def add_image(doc, text, title=None):
     #split_tag = text.split('=')
     #img_path = split_tag[1][1:-3]
     img_path = re.findall('src="([^"]+)"', text, flags=0)[0]
-    if img_path[-3:] != 'gif':
-        text_frame= "\\begin{figure}[h]\\centering\\includegraphics[width=\\linewidth,height=0.8\\textheight,keepaspectratio]{"+img_path+"}\\end{figure}"
-    # else:
-    #     text_frame="\\begin{figure}[h]\\centering\\includemovie{\\linewidth}{\\textheight}{"+img_path+"}\\end{figure}"
-        doc = add_frame(doc, text_frame, title=title)
+    if os.path.isfile(img_path):
+        if img_path[-3:] != 'gif':
+            text_frame= "\\begin{figure}[h]\\centering\\includegraphics[width=\\linewidth,height=0.8\\textheight,keepaspectratio]{"+img_path+"}\\end{figure}"
+        # else:
+        #     text_frame="\\begin{figure}[h]\\centering\\includemovie{\\linewidth}{\\textheight}{"+img_path+"}\\end{figure}"
+            doc = add_frame(doc, text_frame, title=title)
     return doc
 
 def load_head(doc):
